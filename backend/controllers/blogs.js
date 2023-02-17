@@ -15,18 +15,23 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  const blogs = await Blog.findByPk(req.params.id);
+  const blog = await Blog.findByPk(req.params.id);
 
-  res.json(blogs);
+  if (blog) {
+    return res.json(blog);
+  } else {
+    return res.status(404).end();
+  }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   try {
     const blog = await Blog.create(req.body);
 
     return res.json(blog);
   } catch(error) {
-    return res.status(400).json({ error });
+    next(error)
+    // return res.status(400).json({ error });
   }
 });
 
@@ -42,15 +47,16 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-router.put('/:id', blogFinder, async (req, res) => {
+router.put('/:id', blogFinder, async (req, res, next) => {
   if (req.blog) {
     try {
       req.blog.likes = req.body.likes;
       await req.blog.save();
       return res.json(req.blog);
     } catch(error) {
-      console.log(error);
-      return res.status(400).json({ error });
+      // console.log('test', error);
+      next(error)
+      // return res.status(400).json({ error });
     }    
   } else {
     return res.status(404).end();
