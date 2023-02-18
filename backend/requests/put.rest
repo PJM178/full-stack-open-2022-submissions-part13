@@ -4,3 +4,11 @@ Content-Type: application/json
 {
   "likes": 2
 }
+
+###
+PUT http://localhost:3001/api/users/petri
+Content-Type: application/json
+
+{
+  "username": "pmon"
+}

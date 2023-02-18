@@ -5,3 +5,12 @@ Content-Type: application/json
   "author": "Jorma Tikka",
   "url": "https://google.com/"
 }
+###
+POST http://localhost:3001/api/users/
+Content-Type: application/json
+
+{
+  "username": "pmon",
+  "name": "petri",
+  "password": "secret"
+}
