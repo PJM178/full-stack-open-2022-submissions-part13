@@ -14,6 +14,18 @@ router.get('/', async (req, res) => {
   return res.json(users);
 });
 
+router.delete('/:id', async (req, res) => {
+  const user = await User.findByPk(req.params.id);
+
+  if (user) {
+    await user.destroy();
+
+    return res.status(204).end();
+  } else {
+    return res.status(404).end();
+  }
+});
+
 router.post('/', async (req, res, next) => {
  
   // new User should not be used - create or build are preferred

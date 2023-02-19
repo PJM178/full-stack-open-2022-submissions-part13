@@ -5,12 +5,30 @@ Content-Type: application/json
   "author": "Jorma Tikka",
   "url": "https://google.com/"
 }
+### with token
+POST http://localhost:3001/api/blogs/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBldHJpQHBldHJpLmZpIiwiaWQiOjQsImlhdCI6MTY3NjgwODI1OH0.b8102jsJ2gdoqpFasu3vVU0baWsRG-_wsdWiM-fM4qo
+ 
+{
+  "author": "Jorma Tikka",
+  "url": "https://google.com/",
+  "title": "testi tikka"
+}
+
 ###
 POST http://localhost:3001/api/users/
 Content-Type: application/json
 
 {
-  "username": "pmon",
-  "name": "petri",
+  "username": "petri@petri.fi",
+  "password": "secret"
+}
+### 
+POST http://localhost:3001/api/login/
+Content-Type: application/json
+
+{
+  "username": "petri@petri.fi",
   "password": "secret"
 }

@@ -6,7 +6,7 @@ Content-Type: application/json
 }
 
 ###
-PUT http://localhost:3001/api/users/pmon
+PUT http://localhost:3001/api/users/petri@petri.fi
 Content-Type: application/json
 
 {
