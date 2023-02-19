@@ -60,13 +60,17 @@ router.post('/', tokenExtractor, async (req, res, next) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', tokenExtractor, async (req, res, next) => {
   const blog = await Blog.findByPk(req.params.id);
 
   if (blog) {
-    await blog.destroy();
+    if (req.decodedToken.id === blog.userblogId) {
+      await blog.destroy();
 
-    return res.status(204).end();
+      return res.status(204).end();
+    } else {
+      return res.status(401).json({ error: 'Invalid user' })
+    }
   } else {
     return res.status(404).end();
   }
