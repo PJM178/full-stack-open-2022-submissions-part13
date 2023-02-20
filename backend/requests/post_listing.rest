@@ -13,7 +13,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBld
 {
   "author": "Jeppe Joo",
   "url": "https://google.com/",
-  "title": "Karhu Mies"
+  "title": "Metsän Kutsu",
+  "likes": 99
 }
 
 ###
