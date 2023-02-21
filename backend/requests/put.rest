@@ -1,14 +1,14 @@
-PUT http://localhost:3001/api/blogs/5
+PUT http://localhost:3001/api/blogs/8
 Content-Type: application/json
 
 {
-  "likes": 2
+  "likes": 1
 }
 
 ###
-PUT http://localhost:3001/api/users/petri@petri.fi
+PUT http://localhost:3001/api/users/petrii@petri.fi
 Content-Type: application/json
 
 {
-  "username": "petri"
+  "username": "petri@petri.fi"
 }

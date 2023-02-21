@@ -31,7 +31,7 @@ UserBlogs.init({
   sequelize,
   underscored: true,
   timestamps: true,
-  modelName: 'userblogs',
+  modelName: 'blogusers',
 });
 
 module.exports = UserBlogs;
