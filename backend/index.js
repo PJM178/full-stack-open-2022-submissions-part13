@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-console.log(Number(new Date().getFullYear()))
+
 const { PORT } = require('./util/config');
 const { connectToDatabase } = require('./util/db');
 
