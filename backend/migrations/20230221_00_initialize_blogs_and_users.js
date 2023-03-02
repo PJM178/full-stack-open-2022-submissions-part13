@@ -33,7 +33,7 @@ module.exports = {
         allowNull: false,
       },
     });
-    await queryInterface.createTable('blogusers', {
+    await queryInterface.createTable('users', {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -65,14 +65,14 @@ module.exports = {
         allowNull: false,
       },
     });
-    await queryInterface.addColumn('blogs', 'bloguser_id', {
+    await queryInterface.addColumn('blogs', 'user_id', {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: { model: 'blogusers', key: 'id' },
+      references: { model: 'users', key: 'id' },
     });
   },
   down: async ({ context: queryInterface }) => {
     await queryInterface.dropTable('blogs');
-    await queryInterface.dropTable('blogusers')
+    await queryInterface.dropTable('users')
   }, 
 };
