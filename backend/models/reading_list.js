@@ -13,7 +13,7 @@ ReadingList.init({
   isRead: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-    default: false,
+    defaultValue: false,
   },
   blogId: {
     type: DataTypes.INTEGER,

@@ -17,8 +17,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBld
   "likes": 88,
   "year": 1993
 }
+### with token
+POST http://localhost:3001/api/blogs/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBldHJpQHBldHJpLmZpIiwiaWQiOjEsImlhdCI6MTY3Njk3Njg1NH0.WF3DSe1meMNpOxSgLxtSp0ZSFMDSz8TztLmefcOyonU
+ 
+{
+  "author": "Kappale Kaksi",
+  "url": "https://google.com/",
+  "title": "Missä yksi?",
+  "likes": 0,
+  "year": 2023
+}
 
-###
+### käyttäjä yksi
 POST http://localhost:3001/api/users/
 Content-Type: application/json
 
@@ -27,6 +39,16 @@ Content-Type: application/json
   "password": "secret",
   "name": "Petri Montonen"
 }
+
+### käyttäjä kaksi
+POST http://localhost:3001/api/users/
+Content-Type: application/json
+
+{
+  "username": "kalle@kalle.fi",
+  "password": "secret",
+  "name": "Kalle Nalle"
+}
 ### 
 POST http://localhost:3001/api/login/
 Content-Type: application/json
@@ -34,4 +56,13 @@ Content-Type: application/json
 {
   "username": "petri@petri.fi",
   "password": "secret"
+}
+
+### add a blog to the reading list
+POST http://localhost:3001/api/readinglists/
+Content-Type: application/json
+
+{
+  "blogId": 2,
+  "userId": 1
 }

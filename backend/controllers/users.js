@@ -15,13 +15,31 @@ router.get('/', async (req, res) => {
         model: ReadingList,
         attributes: ['blog_id', 'is_read'],
         through: {
-         attributes: [], 
+        //  attributes: [], 
         },
       },
     ]
   });
 
   return res.json(users);
+});
+
+router.get('/:id', async (req, res) => {
+  const user = await User.findByPk(req.params.id, {
+    attributes: ['username', 'name' ],
+    include: [
+      {
+        model: Blog,
+        as: 'readings'
+      },
+    ],
+  });
+
+  if (user) {
+    return res.json(user);
+  } else {
+    return res.status(404).end();
+  }
 });
 
 router.delete('/:id', async (req, res) => {
