@@ -2,9 +2,9 @@ const { Model, DataTypes } = require('sequelize');
 
 const { sequelize } = require('../util/db');
 
-class UserBlogs extends Model {}
+class User extends Model {}
 
-UserBlogs.init({
+User.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -34,4 +34,4 @@ UserBlogs.init({
   modelName: 'user',
 });
 
-module.exports = UserBlogs;
+module.exports = User;
