@@ -10,20 +10,15 @@ ReadingListUser.init({
     primaryKey: true,
     autoIncrement: true,
   },
-  userId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: { model: 'users', key: 'id' },
-  },
   readingListId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: { model: 'reading_lists', key: 'id' },
+    references: { model: 'reading_lists', key: 'id' }
   },
-  blogId: {
+  userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: { model: 'blogs', key: 'id' },
+    references: { model: 'users', key: 'id' }
   }
 }, {
   sequelize,

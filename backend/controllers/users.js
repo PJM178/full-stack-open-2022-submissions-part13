@@ -11,13 +11,13 @@ router.get('/', async (req, res) => {
         model: Blog,
         // attributes: 
       },
-      {
-        model: ReadingList,
-        attributes: ['blog_id', 'is_read'],
-        through: {
-        //  attributes: [], 
-        },
-      },
+      // {
+      //   model: ReadingList,
+      //   attributes: ['blog_id', 'is_read'],
+      //   through: {
+      //    attributes: [], 
+      //   },
+      // },
     ]
   });
 
@@ -27,12 +27,28 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const user = await User.findByPk(req.params.id, {
     attributes: ['username', 'name' ],
-    include: [
+    include: 
       {
         model: Blog,
-        as: 'readings'
+        as: 'readings',
+        attributes: { exclude: ['createdAt', 'updatedAt', 'userId'] },
+        through: {
+          // attributes: [],
+        },
+        include: [
+          {
+            model: ReadingList,
+            // where: {
+            //   userId: 1,
+            // },
+            as: 'readinglists',
+            through: {
+              attributes: [],
+            },
+            // attributes: ['isRead', 'id']
+          },
+        ]
       },
-    ],
   });
 
   if (user) {
