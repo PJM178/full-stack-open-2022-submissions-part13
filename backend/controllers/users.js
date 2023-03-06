@@ -25,6 +25,17 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
+  let where = { }
+  console.log(req.query.read);
+
+  if (req.query.read && req.query.read === 'false' || req.query.read === 'true') {
+    where = { isRead: req.query.read, }
+  }
+
+  console.log(where);
+  console.log(typeof where);
+  console.log(typeof req.query.read);
+
   const user = await User.findByPk(req.params.id, {
     attributes: ['username', 'name' ],
     include: 
@@ -33,21 +44,25 @@ router.get('/:id', async (req, res) => {
         as: 'readings',
         attributes: { exclude: ['createdAt', 'updatedAt', 'userId'] },
         through: {
-          // attributes: [],
+          attributes: ['id', 'isRead'],
+          where,
         },
-        include: [
-          {
-            model: ReadingList,
-            // where: {
-            //   userId: 1,
-            // },
-            as: 'readinglists',
-            through: {
-              attributes: [],
-            },
-            // attributes: ['isRead', 'id']
-          },
-        ]
+        // include: [
+        //   {
+        //     model: ReadingList,
+        //     // where: {
+        //     //   userId: 1,
+        //     // },
+        //     // where: {
+        //     //   isRead: false,
+        //     // },
+        //     as: 'readinglists',
+        //     through: {
+        //       attributes: [],
+        //     },
+        //     // attributes: ['isRead', 'id']
+        //   },
+        // ]
       },
   });
 

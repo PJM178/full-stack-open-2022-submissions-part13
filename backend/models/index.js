@@ -7,7 +7,9 @@ User.hasMany(Blog);
 Blog.belongsTo(User);
 
 User.belongsToMany(Blog, { through: ReadingList, as: 'readings' });
+Blog.belongsToMany(User, { through: ReadingList, as: 'readings' });
 Blog.belongsToMany(ReadingList, { through: ReadingListUser, as: 'readinglists' })
+ReadingList.belongsToMany(Blog, { through: ReadingListUser, as: 'readinglists' })
 // Blog.belongsToMany(User, { through: ReadingList })
 User.hasMany(ReadingList)
 Blog.hasMany(ReadingList)
