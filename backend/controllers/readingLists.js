@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const { ReadingList } = require('../models');
+const { ReadingList, Session } = require('../models');
 const { tokenExtractor } = require('../util/middleware')
 
 router.post('/', async (req, res, next) => {
@@ -13,21 +13,30 @@ router.post('/', async (req, res, next) => {
 });
 
 router.put('/:id', tokenExtractor, async (req, res, next) => {
-  const blogInList = await ReadingList.findByPk(req.params.id);
-  if (blogInList) {
-    if (blogInList.userId === req.decodedToken.id) {
-      try {
-        blogInList.isRead = req.body.read;
-        await blogInList.save();
-        return res.json(blogInList);
-      } catch(e) {
-        next(e)
+  const sessionToken = await Session.findOne({ where: { userId: req.decodedToken.id } });
+  if (sessionToken) {
+    if (sessionToken.userToken === req.token) {
+      const blogInList = await ReadingList.findByPk(req.params.id);
+      if (blogInList) {
+        if (blogInList.userId === req.decodedToken.id) {
+          try {
+            blogInList.isRead = req.body.read;
+            await blogInList.save();
+            return res.json(blogInList);
+          } catch(e) {
+            next(e)
+          }
+        } else {
+          return res.status(401).json({ error: 'Blog not in user\'s reading list' });
+        }
+      } else {
+        return res.status(404).end();
       }
     } else {
-      return res.status(401).json({ error: 'Invalid user' })
+      return res.status(401).json({ error: 'token invalid' });
     }
   } else {
-    return res.status(404).end();
+    return res.status(401).json({ error: 'Not authorized, please login' });
   }
 });
 

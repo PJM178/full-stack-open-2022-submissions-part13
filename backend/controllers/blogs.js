@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const { Op } = require('sequelize');
-const { Blog, User } = require('../models');
+const { Blog, User, Session } = require('../models');
 const { tokenExtractor } = require('../util/middleware')
 
 // Helper functions
@@ -48,31 +48,48 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', tokenExtractor, async (req, res, next) => {
-  try {
-    console.log(req.decodedToken);
-    const user = await User.findByPk(req.decodedToken.id);
-    const blog = await Blog.create({ ...req.body, userId: user.id, date: new Date() });
-
-    return res.json(blog);
-  } catch(error) {
-    next(error)
+  const sessionToken = await Session.findOne({ where: { userId: req.decodedToken.id } });
+  if (sessionToken) {
+    if (sessionToken.userToken === req.token) {
+      try {
+        console.log(req.decodedToken);
+        const user = await User.findByPk(req.decodedToken.id);
+        const blog = await Blog.create({ ...req.body, userId: user.id, date: new Date() });
+    
+        return res.json(blog);
+      } catch(error) {
+        next(error)
+      }
+    } else {
+      return res.status(401).json({ error: 'token invalid' })
+    }
+  } else {
+    return res.status(401).json({ error: 'Not authorized, please login' })
   }
 });
 
 router.delete('/:id', tokenExtractor, async (req, res, next) => {
-  const blog = await Blog.findByPk(req.params.id);
-
-  if (blog) {
-    if (req.decodedToken.id === blog.userblogId) {
-      await blog.destroy();
-
-      return res.status(204).end();
+  const sessionToken = await Session.findOne({ where: { userId: req.decodedToken.id } });
+  if (sessionToken) {
+    if (sessionToken.userToken === req.token) {
+      const blog = await Blog.findByPk(req.params.id);
+      if (blog) {
+        if (req.decodedToken.id === blog.userId) {
+          await blog.destroy();
+    
+          return res.status(204).end();
+        } else {
+          return res.status(401).json({ error: 'Invalid user' })
+        }
+      } else {
+        return res.status(404).end();
+      }
     } else {
-      return res.status(401).json({ error: 'Invalid user' })
+      return res.status(401).json({ error: 'token invalid' });
     }
   } else {
-    return res.status(404).end();
-  }
+    return res.status(401).json({ error: 'Not authorized, please login' });
+  }  
 });
 
 router.put('/:id', blogFinder, async (req, res, next) => {
